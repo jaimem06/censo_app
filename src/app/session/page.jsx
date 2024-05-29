@@ -1,10 +1,21 @@
 //nspage
-import { lista } from '@/hooks/connection';
+import { lista, POST, GET } from '@/hooks/connection';
 import './login.css';
 export default function Session() {
-  lista().then((info) => {
+  /*   lista().then((info) => {
+      console.log(info.data.datos);
+    }); */
+  GET('persona').then((info) => {
     console.log(info.data.datos);
   });
+
+  POST('sesion', {
+    correo: "jaime@gmail.com",
+    clave: "15060901",
+  }).then((info) => {
+    console.log(info.data);
+  });
+
   return (
     <>
       <main className="form-signin text-center mt-5">
