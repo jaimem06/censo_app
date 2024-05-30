@@ -1,33 +1,39 @@
 const URL = process.env.URL_API;
 import axios from 'axios';
-import { headers } from 'next/headers';
 
-export const lista = async () => {
-    const headers = {
-        headers: {
-            "Accept": "application.json"
-        }
-    }
-    return await axios.get(URL + "persona", headers)
-}
-
-// ------------------Tarea------------------
 // Metodo POST
-export const POST = async (ruta, data) => {
-    const headers = {
+export const POST = async (resource, data, token = "NONE") => {
+    let headers = {
         headers: {
-            "Accept": "application.json"
+            "Accept": "application/json",
+            "Content-Type": "application/json"
         }
     }
-    return await axios.post(URL + ruta, data, headers)
+    if (token != "NONE") {
+        headers = {
+            headers: {
+                "Accept": "application/json",
+                "X-Access-Token": token
+            }
+        }
+    }
+    return await axios.post(URL + resource, data, headers)
 }
 
 // Metodo GET
-export const GET = async (ruta) => {
-    const headers = {
+export const GET = async (resource, token = "NONE") => {
+    let headers = {
         headers: {
-            "Accept": "application.json"
+            "Accept": "application/json",
         }
     }
-    return await axios.get(URL + ruta, headers)
+    if (token !== "NONE") {
+        let headers = {
+            headers: {
+                "Accept": "application/json",
+                "X-Access-Token": token,
+            }
+        }
+    }
+    return await axios.get(URL + resource, headers);
 }

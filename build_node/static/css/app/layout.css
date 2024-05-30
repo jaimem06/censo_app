@@ -659,6 +659,9 @@ video {
 .text-balance {
   text-wrap: balance;
 }
+.rounded {
+  border-radius: 0.25rem;
+}
 .rounded-lg {
   border-radius: 0.5rem;
 }
@@ -701,9 +704,17 @@ video {
 .p-8 {
   padding: 2rem;
 }
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 .py-4 {
   padding-top: 1rem;
@@ -729,11 +740,19 @@ video {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
 .font-bold {
   font-weight: 700;
 }
 .font-semibold {
   font-weight: 600;
+}
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 .opacity-50 {
   opacity: 0.5;

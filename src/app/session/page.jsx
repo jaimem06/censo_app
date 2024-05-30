@@ -1,34 +1,58 @@
 //nspage
-import { lista, POST, GET } from '@/hooks/connection';
+'use client';
 import './login.css';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { login } from '@/hooks/services_authenticate';
+import swal from 'sweetalert';
+
 export default function Session() {
-  /*   lista().then((info) => {
-      console.log(info.data.datos);
-    }); */
-  GET('persona').then((info) => {
-    console.log(info.data.datos);
+
+  const validationSchema = Yup.object().shape({
+    correo: Yup.string().trim().required('El correo es requerido'),
+    clave: Yup.string().trim().required('La clave es requerida')
   });
 
-  POST('sesion', {
-    correo: "jaime@gmail.com",
-    clave: "15060901",
-  }).then((info) => {
-    console.log(info.data);
-  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+  const { register, handleSubmit, formState } = useForm(formOptions);
+  let { errors } = formState;
+
+  const sendInfo = (data) => {
+    login(data).then((info) => {
+
+      if (info.code == '200') {
+        console.log(info);
+      } else {
+        swal({
+          title: "Error",
+          text: info.datos.error,
+          icon: "error",
+          button: "Accept",
+          timer: 4000,
+          closeOnEsc: true,
+        });
+        console.log(info);
+        console.log("NO");
+      }
+    });
+  };
 
   return (
     <>
       <main className="form-signin text-center mt-5">
-        <form>
-          <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+        <form onSubmit={handleSubmit(sendInfo)}>
+          <h1 className="h3 mb-3 fw-normal">Inicie Sesion</h1>
 
           <div className="form-floating">
-            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
-            <label htmlFor="floatingInput">Email address</label>
+            <input type="text" name='correo' {...register('correo')} className="form-control" id="floatingInput" placeholder="name@example.com" />
+            <label htmlFor="floatingInput">Correo</label>
+            {errors.correo && <div className="text-xs inline-block py-1 px-2 rounded text-red-600">{errors.correo?.message}</div>}
           </div>
           <div className="form-floating">
-            <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
-            <label htmlFor="floatingPassword">Password</label>
+            <input type="clave" {...register('clave')} name='clave' className="form-control" id="floatingPassword" placeholder="Password" />
+            <label htmlFor="floatingPassword">Clave</label>
+            {errors.clave && <div className="text-xs inline-block py-1 px-2 rounded text-red-600">{errors.clave?.message}</div>}
           </div>
 
           <div className="styles.checkbox mb-3">
@@ -36,7 +60,7 @@ export default function Session() {
               <input type="checkbox" value="remember-me" /> Remember me
             </label>
           </div>
-          <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+          <button className="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesion</button>
         </form>
       </main>
 
