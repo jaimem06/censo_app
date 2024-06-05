@@ -1,13 +1,17 @@
 //nspage
 'use client';
 import './login.css';
+import Cookies from 'js-cookie';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { login } from '@/hooks/services_authenticate';
 import swal from 'sweetalert';
+import { useRouter } from 'next/navigation';
 
 export default function Session() {
+
+  const router = useRouter();
 
   const validationSchema = Yup.object().shape({
     correo: Yup.string().trim().required('El correo es requerido'),
@@ -23,6 +27,18 @@ export default function Session() {
 
       if (info.code == '200') {
         console.log(info);
+        Cookies.set('token', info.datos.token);
+        Cookies.set('user', info.datos.user);
+        swal({
+          title: "Info",
+          text: "Bienvenido " + info.datos.user,
+          icon: "success",
+          button: "Accept",
+          timer: 4000,
+          closeOnEsc: true,
+        });
+        router.push('/dashboard')
+        router.refresh();
       } else {
         swal({
           title: "Error",
