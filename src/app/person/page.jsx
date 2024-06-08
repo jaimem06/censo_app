@@ -1,5 +1,6 @@
 import { all_person } from "@/hooks/service_persona"
 import Menu from "../components/menu/menu"
+import Link from "next/link";
 
 export default async function page() {
 
@@ -8,16 +9,19 @@ export default async function page() {
     return (
         <div>
             <Menu></Menu>
-            <main className="form-signin text-center mt-5">
+            <main>
                 <div className="container-fluid">
-                    <table className="table">
+                    <div className="col-4">
+                        <Link href="/person/new" className="btn btn-success" style={{ margin: "10px" }}>Registrar Censado</Link>
+                    </div>
+                    <table className="table table-bordered" style={{textAlign: "center"}}>
                         <thead>
                             <tr>
-                                <tr>Nro</tr>
-                                <tr>Usuario</tr>
-                                <tr>Estado</tr>
-                                <tr>Fecha Nac</tr>
-                                <tr>Acciones</tr>
+                                <th>Nro</th>
+                                <th>Usuario</th>
+                                <th>Estado</th>
+                                <th>Fecha Nac</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,10 +31,10 @@ export default async function page() {
                                     <td>{dato.apellidos} {dato.nombres}</td>
                                     <td>{dato.estado}</td>
                                     <td>{dato.fecha_nac}</td>
-                                    <tr>
+                                    <td>
                                         <button className="btn btn-success">Editar</button>
-                                        <button className="btn btn-warning">Eliminar</button>
-                                    </tr>
+                                        <button className="btn btn-danger">Eliminar</button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

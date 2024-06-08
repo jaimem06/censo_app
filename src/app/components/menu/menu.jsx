@@ -1,53 +1,63 @@
 'use client';
-
-import { Button } from "bootstrap";
 import Cookies from "js-cookie";
 import Link from "next/link";
 
-//import { useEffect } from "react";
-
-//import 'bootstrap/dist/css/bootstrap.css';
-
 export default function Menu() {
-    const close = (e) => {
-        //console.log("HOLA");
+    const close = () => {
         Cookies.remove('token');
         Cookies.remove('user');
     }
+
+    const styles = {
+        header: {
+            backgroundColor: '#2f3d5c',
+            padding: '10px',
+            color: 'white',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+        },
+        ul: {
+            listStyleType: 'none',
+            padding: 0,
+            display: 'flex',
+            justifyContent: 'space-around',
+        },
+        li: {
+            cursor: 'pointer',
+        },
+        link: {
+            textDecoration: 'none',
+            color: 'white',
+        },
+    };
+
     return (
-        <div>
-            <header>
-                <div className="w-full h-20 navbar-dark bg-dark sticky top-0">
-                    <div className="container mx-auto px-4 h-full">
-                        <div className="flex justify-between items-center h-full">
-                            <ul className="hidden md:flex gap-x-6 text-white">
-                                <li>
-                                    <Link href="/about">
-                                        <p>About Us</p>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="/services">
-                                        <p>Services</p>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="/contacts">
-                                        <p>Contacts</p>
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <Link href="/session" onClick={(e) => close(e)}>
-                                        <p>Close</p>
-                                    </Link>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
+        <header style={styles.header}>
+            <div>
+                <div>
+                    <ul style={styles.ul}>
+                        <li style={styles.li}>
+                            <Link href="/dashboard">
+                                <p style={styles.link}>Dashboard</p>
+                            </Link>
+                        </li>
+                        <li style={styles.li}>
+                            <Link href="/person">
+                                <p style={styles.link}>Tabla Persona</p>
+                            </Link>
+                        </li>
+                        <li style={styles.li}>
+                            <Link href="/contacts">
+                                <p style={styles.link}>Contacts</p>
+                            </Link>
+                        </li>
+                        <li style={styles.li}>
+                            <Link href="/session">
+                                <p onClick={close} style={styles.link}>Close</p>
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
-            </header>
-        </div>
+            </div>
+        </header>
     );
 }
