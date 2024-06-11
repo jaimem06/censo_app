@@ -1,42 +1,93 @@
+'use client';
 import './styles.css';
 import Menu from '@/app/components/menu/menu';
+import { save_person_census, estado_civil } from '@/hooks/service_persona';
+import React, { useEffect, useState } from 'react';
+import swal from 'sweetalert';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
-export default function page() {
+// Funcion para traer el enum de estado civil
+export default function NewPerson() {
+    const [estadoCivil, setEstadoCivil] = useState([]);
+    const { register, handleSubmit } = useForm();
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchEstadoCivil = async () => {
+            const data = await estado_civil();
+            setEstadoCivil(data);
+        };
+
+        fetchEstadoCivil();
+    }, []);
+
+    // Funcion para guardar un censado
+    const sendInfo = async (data) => {
+        let token = Cookies.get('token');
+        const info = await save_person_census(token, data);
+        if (info.code == '200') {
+            console.log(info);
+            swal({
+                title: "Info",
+                text: info.datos.tag,
+                icon: "success",
+                button: "Aceptar",
+                timer: 4000,
+                closeOnEsc: true,
+            });
+            router.push('/person')
+            router.refresh();
+        } else {
+            swal({
+                title: "Error",
+                text: info.datos.error,
+                icon: "error",
+                button: "Aceptar",
+                timer: 4000,
+                closeOnEsc: true,
+            });
+            console.log(info);
+            console.log("NO");
+        }
+    }
+    const onSubmit = data => sendInfo(data);
+
     return (
         <div>
             <Menu></Menu>
-            <section class="container" style={{ marginTop: "20px" }}>
+            <section className="container" style={{ marginTop: "20px" }}>
                 <header>Registrar Censado</header>
-                <form class="form" action="#">
-                    <div class="input-box">
+                <form className="form" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="input-box">
                         <label>Nombres:</label>
-                        <input required="" placeholder="Ingresa los nombres" type="text" />
+                        <input {...register('nombres')} required placeholder="Ingresa los nombres" type="text" />
                     </div>
-                    <div class="input-box">
+                    <div className="input-box">
                         <label>Apellidos:</label>
-                        <input required="" placeholder="Ingresa los apellidos" type="text" />
+                        <input {...register('apellidos')} required placeholder="Ingresa los apellidos" type="text" />
                     </div>
-                    <div class="column">
-                        <div class="input-box">
-                            <label>Fecha de Nacicmiento:</label>
-                            <input required="" placeholder="Fecha de nacimiento" type="date" />
+                    <div className="column">
+                        <div className="input-box">
+                            <label>Fecha de Nacimiento:</label>
+                            <input {...register('fecha_nac')} required placeholder="Fecha de nacimiento" type="date" />
                         </div>
                     </div>
-                    <div class="input-box estado">
+                    <div className="input-box estado">
                         <label>Estado Civil</label>
-                        <div class="column">
-                            <div class="select-box">
-                                <select>
-                                    <option hidden="">Country</option>
-                                    <option>USA</option>
-                                    <option>UK</option>
-                                    <option>Germany</option>
-                                    <option>Japan</option>
+                        <div className="column">
+                            <div className="select-box">
+                                <select {...register('estado')} required>
+                                    <option hidden>Estado Civil</option>
+                                    {estadoCivil.map((estado, index) => (
+                                        <option key={index} value={estado}>{estado}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <button>Guardar Datos</button>
+                    <button type="submit">Guardar Datos</button>
                 </form>
             </section>
         </div>

@@ -1,9 +1,8 @@
-import { all_person } from "@/hooks/service_persona"
-import Menu from "../components/menu/menu"
+import { all_person } from "@/hooks/service_persona";
+import Menu from "../components/menu/menu";
 import Link from "next/link";
 
-export default async function page() {
-
+export default async function Page() {
     let persons = await all_person();
 
     return (
@@ -14,7 +13,7 @@ export default async function page() {
                     <div className="col-4">
                         <Link href="/person/new" className="btn btn-success" style={{ margin: "10px" }}>Registrar Censado</Link>
                     </div>
-                    <table className="table table-bordered" style={{textAlign: "center"}}>
+                    <table className="table table-bordered" style={{ textAlign: "center" }}>
                         <thead>
                             <tr>
                                 <th>Nro</th>
@@ -32,8 +31,7 @@ export default async function page() {
                                     <td>{dato.estado}</td>
                                     <td>{dato.fecha_nac}</td>
                                     <td>
-                                        <button className="btn btn-success">Editar</button>
-                                        <button className="btn btn-danger">Eliminar</button>
+                                        <Link href={"/person/" + dato.external} className="btn btn-info">Modificar</Link>
                                     </td>
                                 </tr>
                             ))}
@@ -42,5 +40,5 @@ export default async function page() {
                 </div>
             </main>
         </div>
-    )
+    );
 }
