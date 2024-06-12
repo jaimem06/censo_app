@@ -9,7 +9,7 @@ export default async function Page() {
         <div>
             <Menu></Menu>
             <main>
-                <div className="container-fluid">
+                <div className="container-fluid" style={{ maxHeight: '90vh', overflow: 'auto' }}>
                     <div className="col-4">
                         <Link href="/person/new" className="btn btn-success" style={{ margin: "10px" }}>Registrar Censado</Link>
                     </div>
