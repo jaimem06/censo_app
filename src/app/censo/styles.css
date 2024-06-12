@@ -1,5 +1,5 @@
 .container {
-    width: 40%;
+    width: 80vh;
     margin: 10px;
     background: #2f3d5c;
     padding: 25px;
@@ -14,17 +14,17 @@
   .container header {
     font-size: 1.2rem;
     color: white;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
   }
     
   .container .form {
-    margin-top: 15px;
+    margin-top: 2px;
   }
     
   .form .input-box {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
   }
     
   .input-box label {
@@ -39,7 +39,7 @@
     margin-top: 5px;
     border: 1px solid #3754b4;
     border-radius: 6px;
-    padding: 0 15px;
+    padding: 0 10px;
     background: #2f3d5c;
   }
     
@@ -53,7 +53,7 @@
   }
     
   .estado :where(input, .select-box) {
-    margin-top: 10px;
+    margin-top: 5px;
   }
     
   .select-box select {
@@ -70,7 +70,7 @@
     color: #000;
     font-size: 1rem;
     font-weight: 400;
-    margin-top: 15px;
+    margin-top: 10px;
     border-radius: 6px;
     cursor: pointer;
     background: #3754b4;

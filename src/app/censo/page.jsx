@@ -1,7 +1,7 @@
 'use client';
 import './styles.css';
 import Menu from '@/app/components/menu/menu';
-import { guardar_censo, motivo_censo } from '@/hooks/services_censo';
+import { guardar_censo, motivo_censo, lista_censo } from '@/hooks/services_censo';
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie';
@@ -13,6 +13,7 @@ import Link from "next/link";
 
 export default function NewCenso() {
     const [motivo, setMotivo] = useState([]);
+    const [listcenso, setListcenso] = useState([]);
     const [persons, setPersons] = useState([]);
     const { register, handleSubmit } = useForm();
     const router = useRouter();
@@ -24,6 +25,11 @@ export default function NewCenso() {
             setMotivo(data);
         };
 
+        const fetchListcenso = async () => {
+            const data = await lista_censo();
+            setListcenso(data.datos);
+        };
+
         const fetchPersons = async () => {
             const data = await all_person();
             setPersons(data.datos);
@@ -31,6 +37,7 @@ export default function NewCenso() {
 
         fetchMotivo();
         fetchPersons();
+        fetchListcenso();
     }, []);
 
     const sendInfo = async (data) => {
@@ -75,7 +82,7 @@ export default function NewCenso() {
                     <input
                         type="text"
                         className="w-full max-w-[120px] bg-white pl-2 text-sm font-medium text-black outline-none rounded-l-lg"
-                        placeholder=""
+                        placeholder="Buscar"
                         id=""
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
@@ -84,7 +91,7 @@ export default function NewCenso() {
                 </div>
             </div>
             <div className="container-fluid" style={{ maxHeight: '100px', overflow: 'auto' }}>
-                <table className="table table-bordered" style={{ textAlign: "center"}}>
+                <table className="table table-bordered" style={{ textAlign: "center" }}>
                     <thead>
                         <tr>
                             <th>Nro</th>
@@ -96,8 +103,8 @@ export default function NewCenso() {
                     </thead>
                     <tbody>
                         {Array.isArray(persons) && persons.filter(person =>
-                        (person.apellidos.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            person.nombres.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                            (person.apellidos.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                person.nombres.toLowerCase().includes(searchTerm.toLowerCase())) ||
                             person.estado.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             person.fecha_nac.toLowerCase().includes(searchTerm.toLowerCase())
                         ).map((person, i) => (
@@ -119,6 +126,14 @@ export default function NewCenso() {
                 <section className="container" style={{ marginTop: "20px" }}>
                     <header>Registrar Censo</header>
                     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="select-box">
+                            <select {...register('censo')} required>
+                                <option hidden>Escoga el Censo</option>
+                                {Array.isArray(listcenso) && listcenso.map((censo, index) => (
+                                    <option key={index} value={censo.motivo}>{censo.motivo}</option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="input-box">
                             <label>Latitud</label>
                             <input {...register('lat')} required placeholder="Ingresar Latitud" type="number" />
@@ -133,8 +148,8 @@ export default function NewCenso() {
                                 <div className="select-box">
                                     <select {...register('motivo')} required>
                                         <option hidden>Motivo del Censo</option>
-                                        {Array.isArray(motivo) && motivo.map((motivo, index) => (
-                                            <option key={index} value={motivo.nombre}>{motivo.nombre}</option>
+                                        {Array.isArray(motivo) && motivo.map((m, index) => (
+                                            <option key={index} value={m.nombre}>{m.nombre}</option>
                                         ))}
                                     </select>
                                 </div>

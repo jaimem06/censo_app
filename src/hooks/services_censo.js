@@ -23,3 +23,14 @@ export async function motivo_censo() {
     }
     return datos;
 }
+
+export async function lista_censo() {
+    let datos = null;
+
+    try {
+        datos = await GET('censo');
+    } catch (error) {
+        return error.response.data;
+    }
+    return datos.data;
+}
