@@ -31,7 +31,7 @@ export default async function Page() {
                                     <td>{dato.estado}</td>
                                     <td>{dato.fecha_nac}</td>
                                     <td>
-                                        <Link href={"/person/" + dato.external} className="btn btn-info">Modificar</Link>
+                                        <Link href={"/person/" + dato.external_id} className="btn btn-info">Modificar</Link>
                                     </td>
                                 </tr>
                             ))}

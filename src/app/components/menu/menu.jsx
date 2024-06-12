@@ -46,13 +46,13 @@ export default function Menu() {
                             </Link>
                         </li>
                         <li style={styles.li}>
-                            <Link href="/contacts">
-                                <p style={styles.link}>Contacts</p>
+                            <Link href="/censo">
+                                <p style={styles.link}>Registrar Censo</p>
                             </Link>
                         </li>
                         <li style={styles.li}>
                             <Link href="/session">
-                                <p onClick={close} style={styles.link}>Close</p>
+                                <p onClick={close} style={styles.link}>Cerrar Sesion</p>
                             </Link>
                         </li>
                     </ul>

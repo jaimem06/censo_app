@@ -1,7 +1,7 @@
 'use client';
 import './styles.css';
 import Menu from '@/app/components/menu/menu';
-import { save_person_census, estado_civil } from '@/hooks/service_persona';
+import { modify_person, estado_civil, get_person } from '@/hooks/service_persona';
 import React, { useEffect, useState } from 'react';
 import swal from 'sweetalert';
 import Cookies from 'js-cookie';
@@ -10,10 +10,19 @@ import { useForm } from 'react-hook-form';
 
 // Funcion para traer el enum de estado civil
 export default function ModificarPerson(params) {
-    console.log(params.external);
     const [estadoCivil, setEstadoCivil] = useState([]);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, setValue } = useForm();
     const router = useRouter();
+
+    const fetchPersonData = async () => {
+        const token = Cookies.get('token');
+        const response = await get_person(token, params.params.external);
+        const data = response.datos; // Accede a los datos correctos
+        setValue('nombres', data.nombres);
+        setValue('apellidos', data.apellidos);
+        setValue('fecha_nac', data.fecha_nac);
+        setValue('estado', data.estado);
+    };
 
     useEffect(() => {
         const fetchEstadoCivil = async () => {
@@ -21,24 +30,37 @@ export default function ModificarPerson(params) {
             setEstadoCivil(data);
         };
 
+        fetchPersonData();
         fetchEstadoCivil();
     }, []);
 
-    // Funcion para guardar un censado
+    // Funcion para modificar un censado
     const sendInfo = async (data) => {
+        // Verificar que los datos no estén vacíos
+        if (!data.nombres || !data.apellidos || !data.fecha_nac || !data.estado) {
+            swal({
+                title: "Error",
+                text: "Todos los campos son obligatorios",
+                icon: "error",
+                button: "Aceptar",
+                timer: 4000,
+                closeOnEsc: true,
+            });
+            return;
+        }
+
         let token = Cookies.get('token');
-        const info = await save_person_census(token, data);
-        if (info.code == '200') {
-            console.log(info);
+        const info = await modify_person(token, params.params.external, data);
+        if (info.code == 200) {
             swal({
                 title: "Info",
-                text: info.datos.tag,
+                text: info.msg,
                 icon: "success",
                 button: "Aceptar",
                 timer: 4000,
                 closeOnEsc: true,
             });
-            router.push('/person')
+            router.push('/person');
             router.refresh();
         } else {
             swal({
@@ -49,15 +71,14 @@ export default function ModificarPerson(params) {
                 timer: 4000,
                 closeOnEsc: true,
             });
-            console.log(info);
-            console.log("NO");
         }
-    }
+    };
+
     const onSubmit = data => sendInfo(data);
 
     return (
         <div>
-            <Menu></Menu>
+            <Menu />
             <section className="container" style={{ marginTop: "20px" }}>
                 <header>Modificar Censado</header>
                 <form className="form" onSubmit={handleSubmit(onSubmit)}>

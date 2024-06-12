@@ -38,6 +38,17 @@
       "static/chunks/main-app.js",
       "static/css/app/person/[external]/page.css",
       "static/chunks/app/person/[external]/page.js"
+    ],
+    "/censo/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/censo/page.css",
+      "static/chunks/app/censo/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

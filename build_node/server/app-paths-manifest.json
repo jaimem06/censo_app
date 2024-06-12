@@ -1,7 +1,9 @@
 {
-  "/session/page": "app/session/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/person/page": "app/person/page.js",
-  "/person/new/page": "app/person/new/page.js",
-  "/person/[external]/page": "app/person/[external]/page.js"
+  "/person/[external]/page": "app/person/[external]/page.js",
+  "/page": "app/page.js",
+  "/censo/page": "app/censo/page.js",
+  "/session/page": "app/session/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

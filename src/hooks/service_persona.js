@@ -18,7 +18,7 @@ export async function all_person() {
 export async function get_person(token, external) {
     let datos = null;
     try {
-        datos = await GET('persona'+external, token);
+        datos = await GET('persona/' + external, token);
     } catch (error) {
         console.log(error.response.data);
         return { "code": 500 }
@@ -41,6 +41,22 @@ export async function save_person_census(token, data) {
     let datos = null;
     try {
         datos = await POST('persona/guardar/censado', data, token);
+    } catch (error) {
+        console.log(error.response.data);
+        return { "code": 500 }
+    }
+    return datos.data;
+}
+
+export async function modify_person(token, external, data) {
+    if (!external) {
+        console.error('External ID is undefined or null');
+        return { "code": 500 };
+    }
+
+    let datos = null;
+    try {
+        datos = await POST('personam/' + external, data, token);
     } catch (error) {
         console.log(error.response.data);
         return { "code": 500 }
